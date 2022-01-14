@@ -1,0 +1,5 @@
+How to Plan a Web Project:
+It's highly imperative that you have a solid plan/outline for any projects that you will be building. The temptation to open-up your IDE and let you're fingers dance freely on the keyboard may be strong. But failure to properly plan a web project will most likely lead to a ton of problems and twice as much stress as the project progresses. There are many different ways to go about planning your web projects...
+
+User Stories:
+A user story is basically a description of an applications functionalities from the perspective of the users. A bunch of user stories put together will clearly describe the feature-set of an app. From that description, you will then be able to design a detailed flow-chart which be a reliable guide on everything that needs to be needs to be implemented. Once you know exactly what you're going to build, you can then use architecture to figure out exactly how to build it. In this step is where you will organize your code and create all the JavaScript functionality line by line. 
