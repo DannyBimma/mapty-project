@@ -2,113 +2,140 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="shortcut icon" type="image/png" href="/icon.png" />
 
-    <title>Unblemished Beauty</title>
-
-    <!-- Style Sheets -->
-    <link rel="stylesheet" href="styles.css" />
-
+    <!-- Fonts -->
     <link
-      href="https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap"
       rel="stylesheet"
     />
 
+    <!-- Style Sheets -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Leaflet Library -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""
+    />
+    <script
+      defer
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin=""
+    ></script>
+
     <!-- Scripts -->
     <script defer src="script.js"></script>
+
+    <title>mapty // Map your workouts</title>
   </head>
-
   <body>
-    <nav class="nav nav_bar">
-      <a href="index.html" class="nav_link">Home</a>
-      <a href="#" class="nav_link">Bookings</a>
-      <a href="#" class="nav_link">Shop</a>
-      <a href="#" class="nav_link">Services</a>
-      <a href="#" class="nav_link">About Us</a>
-    </nav>
+    <div class="sidebar">
+      <img src="logo.png" alt="Logo" class="logo" />
 
-    <div class="title_container">
-      <h1 class="page_title">Unblemished Beauty</h1>
-    </div>
+      <ul class="workouts">
+        <form class="form hidden">
+          <div class="form__row">
+            <label class="form__label">Type</label>
+            <select class="form__input form__input--type">
+              <option value="running">Running</option>
+              <option value="cycling">Cycling</option>
+            </select>
+          </div>
+          <div class="form__row">
+            <label class="form__label">Distance</label>
+            <input class="form__input form__input--distance" placeholder="km" />
+          </div>
+          <div class="form__row">
+            <label class="form__label">Duration</label>
+            <input
+              class="form__input form__input--duration"
+              placeholder="min"
+            />
+          </div>
+          <div class="form__row">
+            <label class="form__label">Cadence</label>
+            <input
+              class="form__input form__input--cadence"
+              placeholder="step/min"
+            />
+          </div>
+          <div class="form__row form__row--hidden">
+            <label class="form__label">Elev Gain</label>
+            <input
+              class="form__input form__input--elevation"
+              placeholder="meters"
+            />
+          </div>
+          <button class="form__btn">OK</button>
+        </form>
 
-    <div class="slideshow_container">
-      <img
-        class="slideshow_image"
-        src="/assets/beauty01.jpeg"
-        alt="Beautiful African Woman"
-        width="1600"
-        height="800"
-      />
-    </div>
+        <!-- <li class="workout workout--running" data-id="1234567890">
+          <h2 class="workout__title">Running on April 14</h2>
+          <div class="workout__details">
+            <span class="workout__icon">🏃‍♂️</span>
+            <span class="workout__value">5.2</span>
+            <span class="workout__unit">km</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">⏱</span>
+            <span class="workout__value">24</span>
+            <span class="workout__unit">min</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">⚡️</span>
+            <span class="workout__value">4.6</span>
+            <span class="workout__unit">min/km</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">🦶🏼</span>
+            <span class="workout__value">178</span>
+            <span class="workout__unit">spm</span>
+          </div>
+        </li>
 
-    <section class="section section_one section_intro">
-      <h2 class="section_one_heading">Be Bold, Beautiful!</h2>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut interdum
-        venenatis purus, ac elementum eros laoreet quis. Proin a ultrices ante.
-        Praesent lacinia volutpat volutpat. Integer tristique, velit et interdum
-        auctor, enim ex rhoncus dolor, nec facilisis augue metus nec eros.
-        Curabitur id ante volutpat, laoreet lorem quis, gravida libero. Quisque
-        viverra varius tempus. Fusce ut magna vel arcu pulvinar euismod. Nullam
-        erat turpis, eleifend et dictum sit amet, interdum quis nulla. Aenean
-        aliquam efficitur massa, sit amet pharetra sapien pulvinar eu. Curabitur
-        iaculis enim ex, et vulputate mauris accumsan eget. Pellentesque
-        fermentum cursus mauris in commodo. Phasellus efficitur nisl viverra,
-        convallis risus rutrum, aliquet ante. Praesent pharetra, ex a euismod
-        ornare, ligula quam ultrices arcu, eu consectetur eros risus nec purus.
+        <li class="workout workout--cycling" data-id="1234567891">
+          <h2 class="workout__title">Cycling on April 5</h2>
+          <div class="workout__details">
+            <span class="workout__icon">🚴‍♀️</span>
+            <span class="workout__value">27</span>
+            <span class="workout__unit">km</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">⏱</span>
+            <span class="workout__value">95</span>
+            <span class="workout__unit">min</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">⚡️</span>
+            <span class="workout__value">16</span>
+            <span class="workout__unit">km/h</span>
+          </div>
+          <div class="workout__details">
+            <span class="workout__icon">⛰</span>
+            <span class="workout__value">223</span>
+            <span class="workout__unit">m</span>
+          </div>
+        </li> -->
+      </ul>
+
+      <p class="copyright">
+        &copy; Copyright by
+        <a
+          class="twitter-link"
+          target="_blank"
+          href="https://twitter.com/jonasschmedtman"
+          >Jonas Schmedtmann</a
+        >. Use for learning or your portfolio. Don't use to teach. Don't claim
+        as your own.
       </p>
-
-      <button class="button button_book_now">Book Now!</button>
-    </section>
-
-    <div class="section_two_heading">
-      <h2>Featured Products</h2>
     </div>
 
-    <section class="section section_two section_product_display">
-      <img
-        src="/assets/brush.jpg"
-        alt="simple beauty brush"
-        width="200"
-        height="400"
-        class="product-img"
-      />
-      <img
-        src="/assets/brush2.jpg"
-        alt="advanced beauty brush"
-        width="200"
-        height="400"
-        class="product-img"
-      />
-      <img
-        src="/assets/creams.jpg"
-        alt="healing cream"
-        width="200"
-        height="400"
-        class="product-img"
-      />
-      <img
-        src="/assets/lipstick.jpg"
-        alt="freak um lipstick"
-        width="200"
-        height="400"
-        class="product-img"
-      />
-    </section>
-
-    <section class="section section_three section_mailing_list">
-      <h2 class="section_three_heading">Beyond Beauty</h2>
-      <p>
-        Join our mailing list for beautiful deals, news, tips, and appointment
-        confirmation!
-      </p>
-      <input type="email" class="input input_email input_mailing_list" />
-      <button class="button button_mailing_list">Sign Up</button>
-    </section>
-
-    <section class="section section_four section_footer">
-      <p>&copy; Unblemished Beauty 2022. All rights reserved.</p>
-    </section>
+    <div id="map"></div>
   </body>
 </html>
