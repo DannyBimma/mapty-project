@@ -28,17 +28,32 @@ navigator.geolocation.getCurrentPosition(
     );
     // use the leaflet library to display a map of your location:
     const coordinates = [longitude, latitude];
-    const map = L.map('map').setView(coordinates, 18);
+    const map = L.map('map').setView([latitude, longitude], 14);
 
     L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
 
-    L.marker([51.5, -0.09])
-      .addTo(map)
-      .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-      .openPopup();
+    // use the on method from the leaflet library on the map object:
+    map.on(`click`, mapEvent => {
+      console.log(mapEvent);
+      const { lat, lng } = mapEvent.latlng;
+
+      L.marker([lat, lng])
+        .addTo(map)
+        .bindPopup(
+          L.popup({
+            maxWidth: 25,
+            minWidth: 100,
+            autoClose: false,
+            closeOnClick: false,
+            className: `running-popup`,
+          })
+        )
+        .setPopupContent(`Geo-tag dropped`)
+        .openPopup();
+    });
   },
   () => {
     alert(`⛔️ The geo-location API failed to obtain your current location!`);
