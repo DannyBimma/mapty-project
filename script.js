@@ -23,8 +23,8 @@ class App {
     inputType.addEventListener(`change`, this._toggleElevationField);
   }
 
+  // use the geo-location API to get user location:
   _getPosition() {
-    // Use the geo-location API to log your location:
     if (navigator.geolocation)
       navigator.geolocation.getCurrentPosition(
         this._loadMap.bind(this),
@@ -32,26 +32,31 @@ class App {
       );
   }
 
+  // alert user if getting their location fails:
   _errorMsg() {
     () => {
       alert(`⛔️ The geo-location API failed to obtain your current location!`);
     };
   }
 
+  // display map with the leaflet library:
   _loadMap(location) {
-    console.log(`🌍 Your browser has identified your current location.`);
-    console.log(location);
     // use destructuring to access to coords object and log the
     // longitude/latitude properties:
     const { longitude } = location.coords;
     const { latitude } = location.coords;
     console.log(longitude, latitude);
 
-    // use the coords to log a google maps link to your location:
+    // log success msg to the console:
+    console.log(`🌍 Your browser has identified your current location.`);
+    console.log(location);
+
+    // log a google maps link to your location:
     console.log(
       `Your browser is showing your current location as: https://www.google.com/maps/@${longitude},${latitude}`
     );
-    // use the leaflet library to display a map of your location:
+
+    // display a map of user location:
     const coordinates = [latitude, longitude];
     this.#map = L.map('map').setView(coordinates, 14);
 
@@ -65,18 +70,21 @@ class App {
     this.#map.on(`click`, this._showForm.bind(this));
   }
 
+  // display workout input form:
   _showForm(mappa) {
     this.#mapEvent = mappa;
     form.classList.remove(`hidden`);
     inputDistance.focus();
   }
 
+  // self-explanatory function name here boi!!!:
   _toggleElevationField() {
     // toggle between distance & cadence input fields to match workout:
     inputElevation.closest(`.form__row`).classList.toggle(`form__row--hidden`);
     inputCadence.closest(`.form__row`).classList.toggle(`form__row--hidden`);
   }
 
+  // self-explanatory function name here again boi!!!:
   _newWorkout(e) {
     // prevent default reload:
     e.preventDefault();
@@ -85,9 +93,10 @@ class App {
     // prettier-ignore
     inputDistance.value = inputDuration.value = inputCadence.value = inputElevation.value = ``;
 
+    // log the mapEvent object:
     console.log(mapEvent);
 
-    // destructure the mouseEvent object & extract the lat lat properties:
+    // destructure the mapEvent object & extract the lat lng properties:
     const { lat, lng } = this.#mapEvent.latlng;
 
     // display map markers at clicked point:
@@ -102,7 +111,7 @@ class App {
           className: `running-popup`,
         })
       )
-      .setPopupContent(`Geo-tag dropped`)
+      .setPopupContent(`Workout location logged!`)
       .openPopup();
   }
 }
