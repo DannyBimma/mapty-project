@@ -12,3 +12,6 @@ The webapp you're building will require a map of the users location. And in this
 
 Project Architecture:
 There are many advanced architecture patterns that can be applied to JavaScript projects. This particular project will be built using object-oriented programming with ES6 classes. One of the most important aspects of any architecture is to decide where and how to store the data, and this is due to the fact that data is the most important part of any application. For this project, classes and objects will have to be designed to best fit the type of data the application will be handling (distance, location, time, speed, elevation, etc.). 
+
+Managing Workout Data (meta):
+Classes should be implemented to handle the data of the cycling and running workouts that are coming from the user interface. 

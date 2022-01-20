@@ -11,6 +11,50 @@ const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 
+// Create workout class:
+class Workout {
+  // store date:
+  date = new Date();
+  // store id:
+  id = Math.floor(100000000 + Math.random() * 900000000);
+
+  constructor(coordinates, distance, duration) {
+    this.coordinates = coordinates; // [lat, lng]
+    this.distance = distance; // kmph
+    this.duration = duration; // mins
+  }
+}
+
+// Create running class:
+class Running extends Workout {
+  constructor(coordinates, distance, duration, cadence) {
+    super(coordinates, distance, duration);
+    this.cadence = cadence;
+    this.pacer();
+  }
+
+  // create pace calc method:
+  pacer() {
+    this.pace = this.duration / this.distance;
+    return this.pace;
+  }
+}
+
+// Create cycling class:
+class Cycling extends Workout {
+  constructor(coordinates, distance, duration, elevation) {
+    super(coordinates, distance, duration);
+    this.elevation = elevation;
+    this.speedo();
+  }
+
+  // create speed calc method:
+  speedo() {
+    this.speed = this.distance / (this.duration / 60);
+    return this.speed;
+  }
+}
+
 // Create the main app class:
 class App {
   #map;
@@ -94,7 +138,7 @@ class App {
     inputDistance.value = inputDuration.value = inputCadence.value = inputElevation.value = ``;
 
     // log the mapEvent object:
-    console.log(mapEvent);
+    console.log(this.#mapEvent);
 
     // destructure the mapEvent object & extract the lat lng properties:
     const { lat, lng } = this.#mapEvent.latlng;
@@ -117,3 +161,11 @@ class App {
 }
 
 const workoutApp = new App();
+
+// Class Tests:
+/*
+const runner = new Running([43, -79], 420, 160, 718);
+const cycler = new Cycling([43, -79], 800, 242, 900);
+console.log(runner);
+console.log(cycler);
+*/
