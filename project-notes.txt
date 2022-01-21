@@ -18,3 +18,6 @@ Classes should be implemented to handle the data of the cycling and running work
 
 Creating a New Workout (meta):
 You will create a new workout from the user interface using the classes implemented in the previous step. 
+
+Rendering New Workouts:
+Now that you implemented a way for new workout objects to be created, it's time to render those objects in the UI. 
