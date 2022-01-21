@@ -27,6 +27,7 @@ class Workout {
 
 // Create running class:
 class Running extends Workout {
+  type = `running`;
   constructor(coordinates, distance, duration, cadence) {
     super(coordinates, distance, duration);
     this.cadence = cadence;
@@ -42,6 +43,7 @@ class Running extends Workout {
 
 // Create cycling class:
 class Cycling extends Workout {
+  type = `cycling`;
   constructor(coordinates, distance, duration, elevation) {
     super(coordinates, distance, duration);
     this.elevation = elevation;
@@ -59,6 +61,7 @@ class Cycling extends Workout {
 class App {
   #map;
   #mapEvent;
+  workouts = [];
   constructor() {
     this._getPosition();
     // Listen for submission on form:
@@ -97,7 +100,7 @@ class App {
 
     // log a google maps link to your location:
     console.log(
-      `Your browser is showing your current location as: https://www.google.com/maps/@${longitude},${latitude}`
+      `Your browser is showing your current location at: https://www.google.com/maps/@${longitude},${latitude}`
     );
 
     // display a map of user location:
@@ -133,18 +136,77 @@ class App {
     // prevent default reload:
     e.preventDefault();
 
+    // get data from form:
+    const workoutType = inputType.value;
+    const workoutDistance = +inputDistance.value;
+    const workoutDuration = +inputDuration.value;
+    const { lat, lng } = this.#mapEvent.latlng;
+    let workout;
+
+    // create workout validation checker:
+    const workoutValidity = (...inputs) =>
+      inputs.every(input => Number.isFinite(input));
+
+    // create positive number checker:
+    const positiveNum = (...inputs) => inputs.every(input => input > 0);
+
+    // if workout = running, create running object:
+    if (workoutType === `running`) {
+      const runningCadence = +inputCadence.value;
+      // check if data is valid:
+      if (
+        // !Number.isFinite(workoutDistance) ||
+        // !Number.isFinite(workoutDuration) ||
+        // !Number.isFinite(runningCadence)
+        !workoutValidity(workoutDistance, workoutDuration, runningCadence) ||
+        !positiveNum(workoutDistance, workoutDuration, runningCadence)
+      ) {
+        return alert(`Workout input must be a positive number!`);
+      }
+      workout = new Running(
+        [lat, lng],
+        workoutDistance,
+        workoutDuration,
+        runningCadence
+      );
+    }
+
+    // if workout = cycling, create cycling object:
+    if (workoutType === `cycling`) {
+      const cyclingElevation = +inputElevation.value;
+      // check if data is valid:
+      if (
+        !workoutValidity(workoutDistance, workoutDuration, cyclingElevation) ||
+        !positiveNum(workoutDistance, workoutDuration)
+      ) {
+        return alert(`Workout input must be a positive number!`);
+      }
+      workout = new Cycling(
+        [lat, lng],
+        workoutDistance,
+        workoutDuration,
+        cyclingElevation
+      );
+    }
+
+    // add new workout object to workout array:
+    this.workouts.push(workout);
+    console.log(workout);
+
+    // display workout map marker:
+    this.workoutMarker(workout);
+
     // clear input fields:
     // prettier-ignore
     inputDistance.value = inputDuration.value = inputCadence.value = inputElevation.value = ``;
 
     // log the mapEvent object:
     console.log(this.#mapEvent);
+  }
 
-    // destructure the mapEvent object & extract the lat lng properties:
-    const { lat, lng } = this.#mapEvent.latlng;
-
-    // display map markers at clicked point:
-    L.marker([lat, lng])
+  // create workout marker method:
+  workoutMarker(workout) {
+    L.marker(workout.coordinates)
       .addTo(this.#map)
       .bindPopup(
         L.popup({
@@ -152,20 +214,12 @@ class App {
           minWidth: 100,
           autoClose: false,
           closeOnClick: false,
-          className: `running-popup`,
+          className: `${workout.type}-popup`,
         })
       )
-      .setPopupContent(`Workout location logged!`)
+      .setPopupContent(`Workout logged!`)
       .openPopup();
   }
 }
 
 const workoutApp = new App();
-
-// Class Tests:
-/*
-const runner = new Running([43, -79], 420, 160, 718);
-const cycler = new Cycling([43, -79], 800, 242, 900);
-console.log(runner);
-console.log(cycler);
-*/

@@ -15,3 +15,6 @@ There are many advanced architecture patterns that can be applied to JavaScript 
 
 Managing Workout Data (meta):
 Classes should be implemented to handle the data of the cycling and running workouts that are coming from the user interface. 
+
+Creating a New Workout (meta):
+You will create a new workout from the user interface using the classes implemented in the previous step. 
