@@ -14,6 +14,8 @@ class Workout {
   date = new Date();
   // store id:
   id = Math.floor(100000000 + Math.random() * 900000000);
+  // store clicks:
+  clicks = 0;
 
   constructor(coordinates, distance, duration) {
     this.coordinates = coordinates; // [lat, lng]
@@ -26,6 +28,10 @@ class Workout {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     // prettier-ignore
     this.description = `${this.type[0].toUpperCase()}${this.type.slice(1)} on ${months[this.date.getMonth()]} ${this.date.getDate()}`
+  }
+
+  _click() {
+    this.clicks++;
   }
 }
 
@@ -68,12 +74,14 @@ class App {
   #map;
   #mapEvent;
   workouts = [];
+
   constructor() {
     this._getPosition();
     // Listen for submission on form:
     form.addEventListener(`submit`, this._newWorkout.bind(this));
     // Listen for a change event on the input type field:
     inputType.addEventListener(`change`, this._toggleElevationField);
+    containerWorkouts.addEventListener(`click`, this._mapMove.bind(this));
   }
 
   // use the geo-location API to get user location:
@@ -288,6 +296,27 @@ class App {
   </li>`;
     }
     form.insertAdjacentHTML(`afterend`, html);
+  }
+
+  _mapMove(e) {
+    if (!this.#map) return;
+
+    const workoutNode = e.target.closest(`.workout`);
+    console.log(workoutNode);
+    if (!workoutNode) return;
+
+    const workout = this.workouts.find(
+      work => work.id == workoutNode.dataset.id
+    );
+    console.log(workout);
+
+    // use leaflet method to move map:
+    this.#map.setView(workout.coordinates, 14, {
+      animate: true,
+      pan: { duration: 1 },
+    });
+
+    workout._click();
   }
 }
 
