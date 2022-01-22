@@ -69,6 +69,7 @@ class Cycling extends Workout {
   }
 }
 
+/////////////////////////////////////////////////////////
 // Create the main app class:
 class App {
   #map;
@@ -76,11 +77,15 @@ class App {
   workouts = [];
 
   constructor() {
+    // get user's location
     this._getPosition();
-    // Listen for submission on form:
+    // get data from local storage:
+    this._localDataStore();
+    // listen for submission on form:
     form.addEventListener(`submit`, this._newWorkout.bind(this));
     // Listen for a change event on the input type field:
     inputType.addEventListener(`change`, this._toggleElevationField);
+    // listen for clicks in the workouts container:
     containerWorkouts.addEventListener(`click`, this._mapMove.bind(this));
   }
 
@@ -129,6 +134,9 @@ class App {
     // use the on method from the leaflet library to display the
     // workout inputs:
     this.#map.on(`click`, this._showForm.bind(this));
+
+    // render workout markers from storage:
+    this.workouts.forEach(workout => this._workoutMarker(workout));
   }
 
   // display workout input form:
@@ -220,12 +228,12 @@ class App {
     // display new workouts in list:
     this._workoutRender(workout);
 
-    // hide form
-
     // clear input fields + hide form:
     // prettier-ignore
-    // inputDistance.value = inputDuration.value = inputCadence.value = inputElevation.value = ``;
     this._hideForm();
+
+    // store all workouts in local-storage:
+    this._setLocalStorage();
 
     // log the mapEvent object:
     console.log(this.#mapEvent);
@@ -316,7 +324,38 @@ class App {
       pan: { duration: 1 },
     });
 
-    workout._click();
+    // click counter:
+    // workout._click();
+  }
+
+  _setLocalStorage() {
+    // use built-in local-storage API:
+    localStorage.setItem(`workouts`, JSON.stringify(this.workouts));
+  }
+
+  // retrieve local storage data:
+  _localDataStore() {
+    const workoutData = localStorage.getItem(`workouts`);
+    console.log(workoutData);
+
+    // convert workout data string back to object:
+    const workoutDataObject = JSON.parse(workoutData);
+    console.log(workoutDataObject);
+
+    if (!workoutData) return;
+
+    // restore the workout data objects to the workouts array:
+    this.workouts = workoutDataObject;
+
+    // render all stored workouts in the workouts list:
+    this.workouts.forEach(workout => this._workoutRender(workout));
+  }
+
+  // create a public interface method to clear local storage:
+  storageReset() {
+    localStorage.removeItem(`workouts`);
+    // reload page:
+    location.reload();
   }
 }
 

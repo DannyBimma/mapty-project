@@ -23,4 +23,7 @@ Rendering New Workouts (meta):
 Now that you implemented a way for new workout objects to be created, it's time to render those objects in the UI. 
 
 Marker Movement Feature (meta):
-Implement a feature that moves the viewport of the map central to the workout marker was dropped by the user.  
+Implement a feature that moves the viewport of the map central to the workout marker was dropped by the user. 
+
+Working With Local-storage:
+Use the built-in LocalStorage API in order to have the workout data persist through multiple page reloads. 
